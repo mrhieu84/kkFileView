@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>xlsx online preview</title>
+        <link rel='stylesheet' href='plugins/css/pluginsCss.css' />
+        <link rel='stylesheet' href='plugins/plugins.css' />
+        <link rel='stylesheet' href='css/luckysheet.css' />
+        <link rel='stylesheet' href='assets/iconfont/iconfont.css' />
+        <script src="plugins/js/plugin.js"></script>
+        <script src="luckysheet.umd.js"></script>
+        <script src="../js/base64.min.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div id="lucky-mask-demo" style="position: absolute;z-index: 1000000;left: 0px;top: 0px;bottom: 0px;right: 0px; background: rgba(255, 255, 255, 0.8); text-align: center;font-size: 40px;align-items:center;justify-content: center;display: none;">Downloading</div>
+        <p style="text-align:center;"> 
+    
+		<div id="luckysheet" style="margin:0px;padding:0px;position:absolute;width:100%;left: 0px;top: 50px;bottom: 0px;outline: none;"></div>
+        <script src="luckyexcel.umd.js"></script>
+        <script>
+       let str =location.search;
+       let search =str.substr(1);
+        //console.log(search); 
+           search = Base64.decode(decodeURIComponent(search));
+         //  console.log(search); 
+          
+                let mask = document.getElementById("lucky-mask-demo");
+                    function loadText() {
+                            var value = search;
+                            var name = 'xlsx.xlsx';
+                            if(value==""){
+                                return;
+                            }
+                           // mask.style.display = "flex";
+                            LuckyExcel.transformExcelToLuckyByUrl(value, name, function(exportJson, luckysheetfile){
+                                if(exportJson.sheets==null || exportJson.sheets.length==0){
+                                    alert("Failed to read excel file content!");
+                                    return;
+                                }
+                                mask.style.display = "none";
+                                window.luckysheet.destroy();
+                                window.luckysheet.create({
+                                container: 'luckysheet', //luckysheet is the container id
+                                lang: "en",
+                             showtoolbarConfig:{
+                             image: true,
+                             print: false, //It won't work even if the print button is turned off. It will depend on the situation later.
+                             exportXlsx: false, //It won't work even if you turn off the export button. It will depend on the situation later.
+                                  },
+
+                               allowCopy: true, // Whether to allow copying
+                               showtoolbar: true, // Whether to display the toolbar
+                               showinfobar: false, // Whether to display the top information bar
+                               // myFolderUrl: "/",//Function: link to the upper left corner <back button
+                               showsheetbar: true, // Whether to display the bottom sheet button
+                               showstatisticBar: true, // Whether to display the bottom count bar
+                               sheetBottomConfig: true, // Add row button and return to top button configuration at the bottom of the sheet page
+                               allowEdit: true, // Whether to allow foreground editing
+                               enableAddRow: false, // Allow adding rows
+                               enableAddCol: false, // Allow adding columns
+                               userInfo: false, // User information display style in the upper right corner
+                               showRowBar: true, // Whether to display the line number area
+                               showColumnBar: false, // Whether to display the column number area
+                               sheetFormulaBar: false, // Whether to display the formula bar
+                               enableAddBackTop: true,//Return to header button
+                               forceCalculation: false, //Below is the export plugin Off by default
+                               enableAddRow: false, // Allow adding rows
+                               plugins: [{ name: 'chart' }, { name: 'exportXlsx', config: { url: 'luckyToXlsx' } }, {
+                               name: 'print', config: {
+                               license: ''
+                               }
+                               }],
+                                    data:exportJson.sheets,
+                                    title:exportJson.info.name,
+                                    userInfo:exportJson.info.name.creator
+                                });
+                            });
+                    }
+
+   loadText();
+
+        </script>
+    </body>
+</html>
