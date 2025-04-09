@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu:22.04
 
 # Update sources to use Aliyun mirrors and install required packages
 RUN sed -i 's@//archive.ubuntu.com@//mirrors.aliyun.com@g' /etc/apt/sources.list && \
@@ -18,10 +18,10 @@ RUN sed -i 's@//archive.ubuntu.com@//mirrors.aliyun.com@g' /etc/apt/sources.list
         xfonts-wqy && \
     echo 'Asia/Ho_Chi_Minh' > /etc/timezone && \
     ln -sf /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime && \
-    localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 && \
+    localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for locale
-ENV LANG=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8
+ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
