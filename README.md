@@ -3,4 +3,5 @@
 ### Introduction
 link: https://github.com/kekingcn/kkFileView
 <br />
-Deploying KKFileView using Docker on Ubuntu with the interface already translated into English.
+Build source and deploying kkFileView with Docker 
+https://tech.nhdesign.app/article/detail/2509900034865153
